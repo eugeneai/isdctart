@@ -3,19 +3,18 @@
 \ProvidesClass{isdctart}[2022/03/31,0.1.0: Typesetting articles for ISDCT SB RAS Journal]
 
 \newcommand{\isdct@setmonofont}[1]{%
-  \setmonofont{#1}[Size=MatchLowercase]%
+  %\setmonofont{#1}%
   \PackageInfo{isdctart}{Set mono font as #1.}}
- \newcommand{\isdct@setmathfont}[1]{%
-   %\setmathfont{#1}%[Size=MatchLowercase]%
-   \PackageInfo{isdctart}{Set math font as #1.}}
 
-\newcommand{\isdct@ttfont}[0] {\isdct@setmonofont{Counter New}}
-\newcommand{\isdct@mathfont}[0] {}
+%\newcommand{\isdct@ttfont}[0] {\isdct@setmonofont{Counter New}}
+\newcommand{\isdct@ttfont}[0] {%
+  \setmonofont{Courier New}
+  \newfontfamily{\cyrillicfonttt}{Courier New}
+}
 
 \AtBeginDocument{%
 \ifPDFTeX\else
 \isdct@ttfont
-%\isdct@mathfont
 \fi
 }
 
@@ -33,9 +32,6 @@
 \DeclareOption{babel}{\isdct@babeltrue}
 
 \DeclareOption{polyglossia}{\isdct@polytrue}
-
-\DeclareOption{wordmath}{%
-\renewcommand{\isdct@mathfont}[0]{\isdct@setmathfont{Asana Math}}}
 
 \isdct@aftrue
 \DeclareOption{sourcecode}{\isdct@sctrue\isdct@affalse}
@@ -72,8 +68,9 @@
 % пакета русификации Babel
 \PackageWarning{babel}{Setting Russian language as default\MessageBreak
       and English as other language.\MessageBreak
-      Устанавливаем русский основным языком текста,\MessageBreak
-    а английский - вторым.}
+      Устанавливаем русский\MessageBreak
+      основным языком текста,\MessageBreak
+      а английский - вторым.}
 \fi
 
 \ifisdct@poly
@@ -91,44 +88,45 @@
 % красно"=зеленый
 \PackageWarning{polyglossia}{Set Russian language as default\MessageBreak
       and English as other language.\MessageBreak
-      Устанавливаем русский основным языком текста,\MessageBreak
+      Устанавливаем русский\MessageBreak
+      основным языком текста,\MessageBreak
       а английский - вторым.}
 \fi
 
-\newif\ifisdct@fontnotdone\isdct@fontnotdonetrue
-\ifisdct@af
-\IfFontExistsTF{Source Code Pro}{%
-  \isdct@fontnotdonefalse
-  \isdct@sctrue
-}{}
-\ifisdct@fontnotdone
-\IfFontExistsTF{Fira Code Medium}{%
-  \isdct@fontnotdonefalse
-  \isdct@fctrue
-}{}
-\fi
-\ifisdct@fontnotdone
-\IfFontExistsTF{Courier New}{%
-  \isdct@fontnotdonefalse
-  \isdct@cntrue
-}{}
-\fi
-\fi  % af, autofont
+% \newif\ifisdct@fontnotdone\isdct@fontnotdonetrue
+% \ifisdct@af
+% \IfFontExistsTF{Source Code Pro}{%
+%   \isdct@fontnotdonefalse
+%   \isdct@sctrue
+% }{}
+% \ifisdct@fontnotdone
+% \IfFontExistsTF{Fira Code Medium}{%
+%   \isdct@fontnotdonefalse
+%   \isdct@fctrue
+% }{}
+% \fi
+% \ifisdct@fontnotdone
+% \IfFontExistsTF{Courier New}{%
+%   \isdct@fontnotdonefalse
+%   \isdct@cntrue
+% }{}
+% \fi
+% \fi  % af, autofont
 
-\ifisdct@sc
-\renewcommand{\isdct@ttfont}[0]{%
-  \isdct@setmonofont{Source Code Pro}
-}
-\fi
-\ifisdct@fc
-\renewcommand{\isdct@ttfont}[0]{%
-  \setmonofont{Fira Code Medium}[Size=Matchlowercase]
-  %\isdct@setmonofont{Fira Code Medium}
-}
-\fi
-\ifisdct@cn
-\renewcommand{\isdct@ttfont}[0]{%
-  \isdct@setmonofont{Counter New}
-}
-\fi
+% \ifisdct@sc
+% \renewcommand{\isdct@ttfont}[0]{%
+%   \isdct@setmonofont{Source Code Pro}
+% }
+% \fi
+% \ifisdct@fc
+% \renewcommand{\isdct@ttfont}[0]{%
+%   \setmonofont{Fira Code Medium}[Size=Matchlowercase]
+%   %\isdct@setmonofont{Fira Code Medium}
+% }
+% \fi
+% \ifisdct@cn
+% \renewcommand{\isdct@ttfont}[0]{%
+%   \isdct@setmonofont{Counter New}
+% }
+% \fi
 %
