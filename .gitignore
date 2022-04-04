@@ -180,3 +180,10 @@ tramp
 # cask packages
 .cask/
 
+/tex/latex/*/auto/*
+/doc/latex/isdctart/*/auto/*
+/template/tex/*.pdf
+/template/tex/*.xmpdata
+/template/tex/*.abs
+/template/tex/*.xmpi
+/template/tex/_minted-*/*
