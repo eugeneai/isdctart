@@ -1,0 +1,1 @@
+../../tex/latex/isdctart/isdctart.cls
