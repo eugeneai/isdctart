@@ -3,18 +3,24 @@
 \ProvidesClass{isdctart}[2022/03/31,0.1.0: Typesetting articles for ISDCT SB RAS Journal]
 
 \newcommand{\isdct@setmonofont}[1]{%
-  %\setmonofont{#1}%
+  \setmonofont{#1}[Scale=MatchLowercase]
+  \newfontfamily{\cyrillicfonttt}{#1}[Scale=MatchLowercase]
   \PackageInfo{isdctart}{Set mono font as #1.}}
 
-%\newcommand{\isdct@ttfont}[0] {\isdct@setmonofont{Counter New}}
-\newcommand{\isdct@ttfont}[0] {%
-  \setmonofont{Courier New}
-  \newfontfamily{\cyrillicfonttt}{Courier New}
-}
+\newcommand{\isdct@ttfont}[0] {\isdct@setmonofont{Courier New}}
+
+\newcommand{\isdct@setmathfont}[1]{%
+  \setmathfont{#1}[Scale=MatchLowercase]
+  % \newfontfamily{\cyrillicfonttt}{#1}[Scale=MatchLowercase]
+  \PackageInfo{isdctart}{Set math font as #1.}}
+
+
+\newcommand{\isdct@mathfont}[0] {}
 
 \AtBeginDocument{%
 \ifPDFTeX\else
 \isdct@ttfont
+\isdct@mathfont
 \fi
 }
 
@@ -37,6 +43,10 @@
 \DeclareOption{sourcecode}{\isdct@sctrue\isdct@affalse}
 \DeclareOption{firacode}{\isdct@fctrue\isdct@affalse}
 \DeclareOption{courier}{\isdct@cntrue\isdct@affalse}
+\DeclareOption{wordmath}{%
+  \renewcommand{\isdct@mathfont}{\isdct@setmathfont{Asana Math}}
+}
+
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ceurart}}
 \ExecuteOptions{}% No default options for now
@@ -52,7 +62,7 @@
 \ifPDFTeX\else
 \RequirePackage{luatextra}
 \RequirePackage{unicode-math}
-\defaultfontfeatures{Size=MatchLowercase}
+%\defaultfontfeatures{Scale=MatchLowercase}
 \fi
 
 
@@ -93,40 +103,38 @@
       а английский - вторым.}
 \fi
 
-% \newif\ifisdct@fontnotdone\isdct@fontnotdonetrue
-% \ifisdct@af
-% \IfFontExistsTF{Source Code Pro}{%
-%   \isdct@fontnotdonefalse
-%   \isdct@sctrue
-% }{}
-% \ifisdct@fontnotdone
-% \IfFontExistsTF{Fira Code Medium}{%
-%   \isdct@fontnotdonefalse
-%   \isdct@fctrue
-% }{}
-% \fi
-% \ifisdct@fontnotdone
-% \IfFontExistsTF{Courier New}{%
-%   \isdct@fontnotdonefalse
-%   \isdct@cntrue
-% }{}
-% \fi
-% \fi  % af, autofont
+\newif\ifisdct@fontnotdone\isdct@fontnotdonetrue
+\ifisdct@af
+\IfFontExistsTF{Source Code Pro}{%
+  \isdct@fontnotdonefalse
+  \isdct@sctrue
+}{}
+\ifisdct@fontnotdone
+\IfFontExistsTF{Fira Code Medium}{%
+  \isdct@fontnotdonefalse
+  \isdct@fctrue
+}{}
+\fi
+\ifisdct@fontnotdone
+\IfFontExistsTF{Courier New}{%
+  \isdct@fontnotdonefalse
+  \isdct@cntrue
+}{}
+\fi
+\fi  % af, autofont
 
-% \ifisdct@sc
-% \renewcommand{\isdct@ttfont}[0]{%
-%   \isdct@setmonofont{Source Code Pro}
-% }
-% \fi
-% \ifisdct@fc
-% \renewcommand{\isdct@ttfont}[0]{%
-%   \setmonofont{Fira Code Medium}[Size=Matchlowercase]
-%   %\isdct@setmonofont{Fira Code Medium}
-% }
-% \fi
-% \ifisdct@cn
-% \renewcommand{\isdct@ttfont}[0]{%
-%   \isdct@setmonofont{Counter New}
-% }
-% \fi
-%
+\ifisdct@sc
+\renewcommand{\isdct@ttfont}[0]{%
+  \isdct@setmonofont{Source Code Pro}
+}
+\fi
+\ifisdct@fc
+\renewcommand{\isdct@ttfont}[0]{%
+  \isdct@setmonofont{Fira Code Medium}
+}
+\fi
+\ifisdct@cn
+\renewcommand{\isdct@ttfont}[0]{%
+  \isdct@setmonofont{Counter New}
+}
+\fi
