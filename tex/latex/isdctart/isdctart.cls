@@ -25,14 +25,37 @@
 
 \newcommand{\isdct@mathfont}[0] {}
 
+\newif\ifpaper@russian\paper@russianfalse
+\newif\ifpaper@english\paper@englishfalse
+
 \AtBeginDocument{%
 \ifPDFTeX\else
 \isdct@ttfont
 \isdct@mathfont
 \fi
+
+\ifpaper@english
+\def\start@switcht{\startenglish}
+\def\start@i18n{
+  \ifisdct@poly
+  \setmainlanguage{english}
+  \setotherlanguage{russian}
+  \selectlanguage{english}
+  \fi}
+\fi
+
+\ifpaper@russian
+\def\start@switcht{\startrussian}
+\def\start@i18n{
+  \ifisdct@poly
+  \setmainlanguage{russian}
+  \setotherlanguage{english}
+  \selectlanguage{russian}
+  \fi}
+\fi
+
 \start@i18n
-% \start@switcht
-\startrussian
+\start@switcht
 }
 
 \newif\ifisdct@babel\isdct@babelfalse
@@ -59,26 +82,16 @@
 }
 
 \DeclareOption{english}{
-    \def\start@switcht{\startenglish}
-    \def\start@i18n{
-      \ifisdct@poly
-      \setmainlanguage{english}
-      \setotherlanguage{russian}
-      \selectlanguage{english}
-      \fi}
+  \global\paper@russianfalse
+  \global\paper@englishtrue
 }
 \DeclareOption{russian}{
-  \def\start@switcht{\startrussian}
-  \def\start@i18n{
-    \ifisdct@poly
-    \setmainlanguage{russian}
-    \setotherlanguage{english}
-    \selectlanguage{russian}
-    \fi}
+  \global\paper@russiantrue
+  \global\paper@englishfalse
 }
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ceurart}}
-\ExecuteOptions{english}% No default options for now
+\ExecuteOptions{}% No default options for now
 \ProcessOptions\relax
 \LoadClass{ceurart}
 
@@ -128,6 +141,7 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T2A,T1]{fontenc}
 \fi
+
 \RequirePackage[english,main=russian]{babel} % Подключение традиционного
 % пакета русификации Babel
 \PackageWarning{babel}{Setting Russian language as default\MessageBreak
@@ -402,6 +416,13 @@
 \frenchspacing
 \righthyphenmin=2
 \lefthyphenmin=2
+\ifpaper@russian
+\else
+\ifpaper@english
+\else
+\paper@englishtrue
+\paper@russianfalse
+\fi
+\fi
 
 \isdct@defgeom
-\start@i18n
