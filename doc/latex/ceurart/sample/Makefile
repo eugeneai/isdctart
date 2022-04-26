@@ -1,7 +1,11 @@
+.PHONY: all unmined clean cleanall delru
+
 # LATEX: pdflatex | xelatex | lualatex
 LATEX = lualatex
 LATEX_FLAGS = -shell-escape
-BIBTEX = bibtex
+# biblatex | bibtex8 | pybtex # the last does UTF-8
+# BIBTEX = bibtex
+BIBTEX = pybtex
 
 # FILES = $(patsubst %.tex, %.pdf, sample-1cols.tex)
 FILES = $(patsubst %.tex, %.pdf, sample-1col-ru.tex)
@@ -32,3 +36,6 @@ clean:
 
 cleanall: clean
 	-rm -rf out auto
+
+delru:
+	rm -f sample-1col-ru.{aux,pdf,bbl}

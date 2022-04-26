@@ -401,6 +401,11 @@
 }
 
 \ExplSyntaxOn
+\ifPDFTeX
+  \bibliographystyle{gost2008}
+\else
+  \bibliographystyle{ugost2008}
+\fi
 
 %% Acknowledgments
 % save the old commands
