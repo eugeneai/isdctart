@@ -101,7 +101,6 @@
 
 
 
-
 \RequirePackage{iftex}
 \ifPDFTeX\else
 \RequirePackage{luatextra}
@@ -402,9 +401,9 @@
 
 \ExplSyntaxOn
 \ifPDFTeX
-  \bibliographystyle{gost2008}
+  \bibliographystyle{gost2008n}
 \else
-  \bibliographystyle{ugost2008}
+  \bibliographystyle{ugost2008n}
 \fi
 
 %% Acknowledgments
@@ -461,6 +460,17 @@
     {Труды\ ИДСТУ\ СО\ РАН~(\href{http://idstu.irk.ru}{IDSTU.irk.ru})}%
   \end{minipage}
 }
+
+\NewDocumentEnvironment{authorabout}{ m o +b }
+{\par\vspace{1.5em}\noindent\begin{tabular*}{\textwidth}{p{0.2\linewidth}p{0.751\linewidth}}
+   \IfNoValueF{#2}{\mbox{\raisebox{
+                              \dimexpr-\height+.6\baselineskip
+                              }[0pt][0pt]
+                              {\includegraphics[width=\linewidth]{#2}}}} &
+    \noindent{\bfseries #1}\par
+    \noindent #3
+  }
+{ \end{tabular*}}
 
 \ExplSyntaxOff
 
