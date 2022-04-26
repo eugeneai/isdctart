@@ -3,7 +3,9 @@ LATEX = lualatex
 LATEX_FLAGS = -shell-escape
 BIBTEX = bibtex
 
-FILES = $(patsubst %.tex, %.pdf, $(wildcard *.tex))
+# FILES = $(patsubst %.tex, %.pdf, sample-1cols.tex)
+FILES = $(patsubst %.tex, %.pdf, sample-1col-ru.tex)
+# FILES = $(patsubst %.tex, %.pdf, $(wildcard *.tex))
 
 all: $(FILES)
 
@@ -26,7 +28,7 @@ clean:
 	for i in $(ALLSUBDIRS); do \
 	    (cd $$i; make clean) || exit 1; \
 	done
-	-rm $(FILES)
+	-rm -f $(FILES)
 
 cleanall: clean
 	-rm -rf out auto

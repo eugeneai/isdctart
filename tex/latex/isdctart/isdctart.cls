@@ -35,22 +35,22 @@
 \fi
 
 \ifpaper@english
-\def\start@switcht{\startenglish}
+\def\start@switcht{\switcht@albion}
 \def\start@i18n{
   \ifisdct@poly
   \setmainlanguage{english}
   \setotherlanguage{russian}
-  \selectlanguage{english}
+  % \selectlanguage{english}
   \fi}
 \fi
 
 \ifpaper@russian
-\def\start@switcht{\startrussian}
+\def\start@switcht{\switcht@russian}
 \def\start@i18n{
   \ifisdct@poly
   \setmainlanguage{russian}
   \setotherlanguage{english}
-  \selectlanguage{russian}
+  % \selectlanguage{russian}
   \fi}
 \fi
 
@@ -69,7 +69,9 @@
 
 % -------------- Options -----------------
 
-\DeclareOption{babel}{\isdct@babeltrue}
+\DeclareOption{babel}{\global\isdct@babeltrue
+  \global\paper@englishfalse
+  \global\paper@russiantrue}
 
 \DeclareOption{polyglossia}{\isdct@polytrue}
 
@@ -223,26 +225,26 @@
 
 \newcommand{\isdct@defgeom}{\geometry{a4paper,height=25cm,width=16.7cm,outer=1.8cm,marginparwidth=2cm}}
 %\def\email#1{\makeatletter{\tt#1}\makeatother}
-\hypersetup{
-    %bookmarks=true,         % show bookmarks bar?
-    unicode=true,          % non-Latin characters in Acrobat’s bookmarks
-    pdftoolbar=true,        % show Acrobat’s toolbar?
-    pdfmenubar=true,        % show Acrobat’s menu?
-    pdffitwindow=false,     % window fit to page when opened
-    pdfstartview={FitH},    % fits the width of the page to the window
-    pdftitle={Procedings of NLA'2018 conference},    % title
-    pdfauthor={},     % author
-    pdfsubject={math},   % subject of the document
-    pdfcreator={LaTeX},   % creator of the document
-    pdfproducer={LaTeX}, % producer of the document
-    pdfkeywords={math}, % list of keywords
-    pdfnewwindow=true,      % links in new window
-    colorlinks=true,       % false: boxed links; true: colored links
-    linkcolor=black, %[rgb]{0 0.4 0.1},          % color of internal links
-    citecolor=black, %blue,        % color of links to bibliography
-    filecolor=black,      % color of file links
-    urlcolor=black % [rgb]{0.3 0.0 0.3}           % color of external links
-}
+% \hypersetup{
+%     %bookmarks=true,         % show bookmarks bar?
+%     unicode=true,          % non-Latin characters in Acrobat’s bookmarks
+%     pdftoolbar=true,        % show Acrobat’s toolbar?
+%     pdfmenubar=true,        % show Acrobat’s menu?
+%     pdffitwindow=false,     % window fit to page when opened
+%     pdfstartview={FitH},    % fits the width of the page to the window
+%     pdftitle={Procedings of NLA'2018 conference},    % title
+%     pdfauthor={},     % author
+%     pdfsubject={math},   % subject of the document
+%     pdfcreator={LaTeX},   % creator of the document
+%     pdfproducer={LaTeX}, % producer of the document
+%     pdfkeywords={math}, % list of keywords
+%     pdfnewwindow=true,      % links in new window
+%     colorlinks=true,       % false: boxed links; true: colored links
+%     linkcolor=black, %[rgb]{0 0.4 0.1},          % color of internal links
+%     citecolor=black, %blue,        % color of links to bibliography
+%     filecolor=black,      % color of file links
+%     urlcolor=black % [rgb]{0.3 0.0 0.3}           % color of external links
+% }
 
 \def\start@i18n{}
 \def\start@switcht{}
@@ -279,6 +281,7 @@
 \def\questionname{Question}
 \def\remarkname{Remark}
 \def\seename{see}
+\RenewDocumentCommand \keywordtitle { } {Keywords}
 \def\solutionname{Solution}
 \def\subclassname{{\it Subject Classifications\/}:}
 \def\tablename{Table}
@@ -317,6 +320,7 @@
 \def\propositionname{Утверждение}
 \def\questionname{Вопрос}
 \def\remarkname{Замечание}
+\RenewDocumentCommand \keywordtitle { } {Ключевые слова}
 \def\seename{см.}
 \def\solutionname{Решение}
 \def\subclassname{{\it Тематические классификации\/}:}
@@ -360,8 +364,8 @@
 % \def\tablename{\cyr\CYRT\cyra\cyrb\cyrl\cyri\cyrc\cyra}
 % \def\thebibliographyname{\cyr\CYRS\cyrp\cyri\cyrs\cyro\cyrk\ \cyrl\cyri\cyrt\cyre\cyrr\cyra\cyrt\cyru\cyrr\cyrery}}
 
-\newcommand{\startenglish}{\switcht@albion\selectlanguage{english}}
-\newcommand{\startrussian}{\switcht@russian\selectlanguage{russian}}
+\newcommand{\startenglish}{\ifisdct@poly\selectlanguage{english}\fi\switcht@albion}
+\newcommand{\startrussian}{\ifisdct@poly\selectlanguage{russian}\fi\switcht@russian}
 
 \newenvironment{englishtitle}%
 {
@@ -409,6 +413,50 @@
 }
 { \group_end: }
 
+\cs_gset:Npn \__make_fig_caption:nn #1#2 {
+  \l_fig_align_tl
+  \skip_vertical:N \l_fig_abovecap_skip
+  % \bool_if:NTF \g_fig_full_bool
+  % { \skip_horizontal:n { -\FullWidth } } { }
+  \parbox{ \l_fig_width_dim }
+  {\rightskip=0pt\sffamily\small\textbf{\color{scolor}#1.}~#2\par }
+  \skip_vertical:N \l_fig_belowcap_skip
+}
+
+\cs_gset:Npn \__make_tbl_caption:nn #1#2
+{
+  \l_tbl_align_tl
+  \skip_vertical:N \l_tbl_abovecap_skip
+  % \bool_if:NTF \g_tbl_full_bool
+  % {
+  %  \color{scolor!70}\rule{\FullWidth}{2pt}\normalcolor\\
+  % }
+  % { \color{scolor!70}\rule{\tblwidth}{2pt}\normalcolor\\ }
+  % \fboxsep=4pt
+  % \colorbox{white}
+  {\parbox{ \dimexpr(\l_tbl_width_dim)}
+    {\rightskip=0pt\sffamily\small\textbf{\color{scolor}#1}\par#2\par\vskip4pt }}
+  \skip_vertical:N \l_tbl_belowcap_skip
+}
+
+\def\@ceurLogoLine{%
+  % set width of ceur-ws logo equals to width of cc-by logo
+  \setbox\@tempboxa\hbox{\includegraphics[height=\baselineskip,clip]{cc-by}}%
+  \ccLogoWidth=\dimexpr\wd\@tempboxa
+  \setbox\@tempboxa\hbox{\includegraphics[width=\ccLogoWidth,clip]{isdct-j-logo}}
+  \@rightskip\@flushglue \rightskip\@rightskip
+  % \hangindent\dimexpr\wd\@tempboxa+0.5em\relax
+  \begin{minipage}[c]{\ccLogoWidth}
+    \href{http://idstu.irk.ru}%
+    % {\lower\baselineskip\hbox{\unhcopy\@tempboxa}}\enskip
+    {\hbox{\unhcopy\@tempboxa}}
+  \end{minipage}
+  \nobreak\enskip
+  \begin{minipage}[c]{\linewidth - \ccLogoWidth - 2\footnotemargin}
+    {Труды\ ИДСТУ\ СО\ РАН~(\href{http://idstu.irk.ru}{IDSTU.irk.ru})}%
+  \end{minipage}
+}
+
 \ExplSyntaxOff
 
 
@@ -416,6 +464,7 @@
 \frenchspacing
 \righthyphenmin=2
 \lefthyphenmin=2
+
 \ifpaper@russian
 \else
 \ifpaper@english
